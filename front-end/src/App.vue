@@ -12,6 +12,9 @@
           <router-link to="/test" class="item">
             <i class="graduation cap icon"></i> Test
           </router-link>
+          <router-link to="/Tran_Hoang_Vu_TV6950k" class="item">
+            <i class="user circle icon"></i> Hoang Vu
+          </router-link>
         </div>
       </div>
     </div>

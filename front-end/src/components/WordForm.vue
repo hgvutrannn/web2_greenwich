@@ -15,6 +15,13 @@
        </div>
        <input type="text" placeholder="Enter word..." v-model="word.english" />
      </div>
+
+     <div class="ui labeled input fluid">
+       <div class="ui label">
+         <i class="france flag"></i> French
+       </div>
+       <input type="text" placeholder="Enter word..." v-model="word.french" />
+     </div>
  
      <button class="positive ui button">Submit</button>
    </form>

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema; // use the Schema class from the Mongoose library
 
-const VocabSchema = new Schema(
+const VocabSchema = new Schema( // create a new instance of the Schema class that has 2 attributes (englinsh and german)
     {
         english: {
             type: String,
@@ -11,9 +11,13 @@ const VocabSchema = new Schema(
         german: {
             type: String,
             required: 'German word cannot be blank'
+        },
+        french: { // Add the third language
+            type: String,
+            required: 'French word cannot be blank'
         }
     },
-    { collection: 'vocab' }
+    { collection: 'vocab3' }
 );
 
-module.exports = mongoose.model('Vocab', VocabSchema);
+module.exports = mongoose.model('Vocab', VocabSchema); // solidify this Schema as a data model with mongoose and export it from this file for use in other areas
