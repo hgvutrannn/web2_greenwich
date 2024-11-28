@@ -6,6 +6,8 @@ import Show from './views/Show.vue';
 import Edit from './views/Edit.vue';
 import Test from './views/Test.vue';
 import AboutMe from './views/AboutMe.vue';
+import Register from './views/Register.vue';
+import Login from './views/Login.vue';
 
 Vue.use(Router);
 
@@ -47,6 +49,14 @@ export default new Router({
         path: '/Tran_Hoang_Vu_TV6950k',
         name: 'about-me',
         component: AboutMe
+    },
+    {
+      path: '/register',
+      component: Register
+    },
+    {
+      path: '/login',
+      component: Login
     },
   ]
 });

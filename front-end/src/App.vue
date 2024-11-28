@@ -15,6 +15,12 @@
           <router-link to="/Tran_Hoang_Vu_TV6950k" class="item">
             <i class="user circle icon"></i> Hoang Vu
           </router-link>
+          <router-link to="/login" class="item">
+            <i class="sign-in icon"></i> Login
+          </router-link>
+          <router-link to="/register" class="item">
+            <i class="user plus icon"></i> Register
+          </router-link>
         </div>
       </div>
     </div>
