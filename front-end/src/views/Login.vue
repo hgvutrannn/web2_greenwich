@@ -56,8 +56,7 @@
 
           // Store the token in localStorage
           localStorage.setItem("token", response.token);
-          EventBus.$emit('authChange', true); // Emit authentication change event
-          EventBus.$emit('usernameUpdated', response.user.username);
+          EventBus.$emit('authChange', true, response.user.username); // Emit authentication change event
 
           // Redirect user to the dashboard or words list
           this.$router.push("/words");

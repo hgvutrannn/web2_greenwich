@@ -14,7 +14,7 @@
             <i class="graduation cap icon"></i> Test
           </router-link>
           <router-link to="/Tran_Hoang_Vu_TV6950k" class="item">
-            <i class="user circle icon"></i> Author
+            <i class="user circle icon"></i> Hoang Vu
           </router-link>
 
           <!-- Show Login/Register if not authenticated -->
@@ -61,29 +61,12 @@ export default {
     };
   },
   created() {
-    EventBus.$on('authChange', (authenticated) => {
+    EventBus.$on('authChange', (authenticated, newUsername) => {
       this.isAuthenticated = authenticated; // Update authentication state
+      this.username = newUsername;
     });
-    
-    // Listen for username updates
-    EventBus.$on('usernameUpdated', (newUsername) => {
-      this.username = newUsername; // Update username dynamically
-    });
-    
-    // Fetch username on initial load if already authenticated
-    if (this.isAuthenticated) {
-      this.fetchUsername();
-    }
   },
   methods: {
-    async fetchUsername() {
-      try {
-        const profile = await api.getProfile(); // Fetch profile using API helper
-        this.username = profile.username; // Update username dynamically
-      } catch (error) {
-        console.error('Failed to fetch username:', error);
-      }
-    },
     logout() {
       localStorage.removeItem('token'); // Clear the JWT token
       EventBus.$emit('authChange', false); // Emit logout event

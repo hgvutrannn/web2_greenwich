@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { api } from '../helpers/helpers';
+
 export default {
   name: 'vocab-test',
   props: {
@@ -87,6 +89,7 @@ export default {
       if (this.randWords.length === 0) {
         this.testOver = true;
         this.displayResults();
+        this.saveTestResult();
       }
     },
     displayResults: function () {
@@ -98,7 +101,21 @@ export default {
         this.result = `<strong>You got the following words wrong:</strong> ${incorrect}`;
         this.resultClass = 'error';
       }
-    }
+    },
+    async saveTestResult() {
+      try {
+        const payload = {
+          score: this.score,
+          incorrectAnswers: this.incorrectGuesses,
+        };
+        console.log(payload)
+        await api.saveTestResult(payload); // API call to save test results
+        this.flash('Test result saved successfully.', 'success', { timeout: 3000 });
+      } catch (error) {
+        console.error('Failed to save test result:', error);
+        this.flash('Failed to save test result.', 'error', { timeout: 3000 });
+      }
+    },
   }
 };
 </script>

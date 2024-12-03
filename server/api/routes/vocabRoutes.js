@@ -17,7 +17,12 @@ module.exports = app => {
     app
         .route('/profile')
         .get(authenticate, userController.getProfile) // Fetch profile
-        .put(authenticate, userController.updateProfile); // Update profile
+        .put(authenticate, userController.updateProfile) // Update profile
+    
+    app
+        .route('/profile/test-result')
+        .post(authenticate, userController.saveTestResult);
+
     // Routes for user management
     app
         .route('/register')
@@ -26,4 +31,6 @@ module.exports = app => {
     app
         .route('/login')
         .post(userController.loginUser); // User login
+
+    
 };

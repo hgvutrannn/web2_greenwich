@@ -76,8 +76,10 @@ exports.getProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+    // Calculate the total score
+    const totalScore = user.testHistory.reduce((acc, test) => acc + test.score, 0);
 
-    res.status(200).json(user);
+    res.status(200).json({ ...user.toObject(), totalScore });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
@@ -87,10 +89,8 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    // Update only allowed fields (e.g., name, password)
     const { username, password } = req.body;
-    
+
     // Build the update object
     const updates = {};
     if (username) updates.username = username;
@@ -98,7 +98,15 @@ exports.updateProfile = async (req, res) => {
       const salt = await bcrypt.genSalt(10); // Use bcrypt for password hashing
       updates.password = await bcrypt.hash(password, salt);
     }
-    console.log(updates)
+
+    // Check if the new username already exists
+    if (username) {
+      const existingUser = await User.findOne({ username });
+      if (existingUser && existingUser._id.toString() !== userId) {
+        return res.status(409).json({ message: 'Username already exists.' });
+      }
+    }
+
     // Update the user in the database
     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
       new: true,
@@ -113,5 +121,31 @@ exports.updateProfile = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+exports.saveTestResult = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { score, incorrectAnswers } = req.body;
+
+    if (!score) {
+      return res.status(400).json({ message: 'Score are required.' });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Add the test result to the user's history
+    user.testHistory.push({ score, incorrectAnswers });
+    await user.save();
+
+    res.status(200).json({ message: 'Test result saved successfully.' });
+  } catch (error) {
+    console.error('Error saving test result:', error);
+    res.status(500).json({ message: 'Server error.' });
   }
 };

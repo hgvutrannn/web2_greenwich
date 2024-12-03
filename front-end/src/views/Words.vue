@@ -16,9 +16,9 @@
         <td>{{ word.french }}</td>
         <td width="75" class="center aligned">
         <router-link :to="{ name: 'show', params: { id: word._id }}">Show</router-link></td>
-        <td width="75" class="center aligned">
+        <td width="75" class="center aligned" v-if="isAuthenticated">
         <router-link :to="{ name: 'edit', params: {id: word._id }}">Edit</router-link></td>
-        <td width="75" class="center aligned" @click.prevent="onDestroy(word._id)">
+        <td width="75" class="center aligned" v-if="isAuthenticated" @click.prevent="onDestroy(word._id)">
         <a :href="`/words/${word._id}`">Destroy</a></td>
       </tr>
     </table>
@@ -32,7 +32,8 @@ export default {
   name: 'words',
   data() {
     return {
-      words: []
+      words: [],
+      isAuthenticated: !!localStorage.getItem('token'), // Check if token exists
     };
   },
   methods: {

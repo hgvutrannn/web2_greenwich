@@ -87,4 +87,10 @@ export const api = {
         return res.data;
     }),
 
+    saveTestResult: handleError(async (payload) => {
+        const headers = attachToken(); // Attach JWT token
+        const res = await axios.post(baseURL + 'profile/test-result', payload, { headers });
+        return res.data;
+      }),
+      
 };
