@@ -1,25 +1,38 @@
 <template>
-    <div class="register">
-      <h1>Register</h1>
-      <form @submit.prevent="register">
+  <div class="register">
+    <h1 class="mb-4">Register</h1> 
+    <form @submit.prevent="register">
+      <div class="form-group mb-3"> 
+        <label for="username">Username</label>
         <input
+          id="username"
           type="text"
+          class="form-control"
           v-model="username"
           placeholder="Enter username"
           required
         />
+      </div>
+
+      <div class="form-group mb-3"> 
+        <label for="password">Password</label>
         <input
+          id="password"
           type="password"
+          class="form-control"
           v-model="password"
           placeholder="Enter password"
           required
         />
-        <button type="submit">Register</button>
-      </form>
-      <p v-if="message" :class="statusClass">{{ message }}</p>
-    </div>
-  </template>
-  
+      </div>
+
+      <button type="submit" class="btn btn-primary mb-3">Register</button>
+    </form>
+
+    <p v-if="message" :class="statusClass" class="mt-3">{{ message }}</p> 
+  </div>
+</template>
+
   <script>
   import { api } from '../helpers/helpers';
   
@@ -33,22 +46,6 @@
       };
     },
     methods: {
-      // async register() {
-      //   try {
-      //     const userData = {
-      //       username: this.username,
-      //       password: this.password
-      //     };
-      //     const response = await api.registerUser(userData); // Use the helper function
-      //     console.log('Response:', response);
-      //     this.message = response.message; // Display success message
-      //     this.statusClass = 'success';
-      //   } catch (errorMessage) {
-      //     console.log('Error:', error);
-      //     this.message = errorMessage; // Display error message
-      //     this.statusClass = 'error';
-      //   }
-      // }
       async register() {
         console.log('Register method called'); // Debugging
         const userData = { username: this.username, password: this.password };

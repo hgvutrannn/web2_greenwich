@@ -13,7 +13,13 @@ Vue.use(VueFlashMessage, {
 const vm = new Vue();
 const baseURL = 'http://localhost:3000/';
 
-const handleError = fn => (...params) => 
+// Attach JWT token only for protected routes
+const attachToken = () => {
+    const token = localStorage.getItem('token');
+    return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+const handleError = fn => (...params) =>
     fn(...params).catch(error => {
         const status = error.response?.status || 'Unknown';
         const statusText = error.response?.statusText || 'Error occurred';
@@ -29,7 +35,7 @@ const handleError = fn => (...params) =>
 
 export const api = {
     getWord: handleError(async id => {
-        const res = await axios.get(baseURL + 'words' + id);
+        const res = await axios.get(baseURL + 'words/' + id);
         return res.data;
     }),
     getWords: handleError(async () => {
@@ -37,16 +43,24 @@ export const api = {
         return res.data;
     }),
 
+    logout: handleError(async () => {
+        localStorage.removeItem('token');
+    }),
+
     deleteWord: handleError(async id => {
-        const res = await axios.delete(baseURL + 'words' + id);
+        const headers = attachToken(); // Attach token to the request
+        const res = await axios.delete(baseURL + 'words/' + id, { headers });
         return res.data;
     }),
     createWord: handleError(async payload => {
-        const res = await axios.post(baseURL + 'words', payload);
+        const headers = attachToken(); // Attach token to the request
+        console.log(headers);
+        const res = await axios.post(baseURL + 'words', payload, { headers });
         return res.data;
     }),
     updateWord: handleError(async payload => {
-        const res = await axios.put(baseURL + 'words' + payload._id, payload);
+        const headers = attachToken();
+        const res = await axios.put(baseURL + 'words/' + payload._id, payload, { headers });
         return res.data;
     }),
 
@@ -58,7 +72,19 @@ export const api = {
 
     loginUser: handleError(async payload => {
         const res = await axios.post(baseURL + 'login', payload);
-        return res.data; 
-    })
+        return res.data;
+    }),
+
+    getProfile: handleError(async () => {
+        const headers = attachToken();
+        const res = await axios.get(baseURL + 'profile', { headers }); // Fetch profile from the backend
+        return res.data;
+    }),
+
+    updateProfile: handleError(async (payload) => {
+        const headers = attachToken();
+        const res = await axios.put(baseURL + 'profile', payload, { headers }); // Update profile on the backend
+        return res.data;
+    }),
 
 };

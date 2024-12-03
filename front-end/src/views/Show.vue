@@ -18,7 +18,7 @@
         <div class="ui label">
           <i class="france flag"></i> French
         </div>
-        <input type="text" readonly  :value="word.english"/>
+        <input type="text" readonly  :value="word.french"/>
       </div>
       <div class="actions">
         <router-link :to="{ name: 'edit', params: { id: this.$route.params.id }}">
