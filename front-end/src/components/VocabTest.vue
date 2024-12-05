@@ -74,11 +74,8 @@ export default {
       }
 
       // Log incorrect guesses for English or French
-      if (!isCorrectEnglish) {
-        this.incorrectGuesses.push(`${this.currWord.german} (English: ${this.currWord.english})`);
-      }
-      if (!isCorrectFrench) {
-        this.incorrectGuesses.push(`${this.currWord.german} (French: ${this.currWord.french})`);
+      if (!isCorrectEnglish || !isCorrectFrench) {
+        this.incorrectGuesses.push(`${this.currWord.german} - ${this.currWord.english} - ${this.currWord.french}`);
       }
 
       // Reset inputs
@@ -97,8 +94,8 @@ export default {
         this.result = 'You got everything correct. Well done!';
         this.resultClass = 'success';
       } else {
-        const incorrect = this.incorrectGuesses.join(', ');
-        this.result = `<strong>You got the following words wrong:</strong> ${incorrect}`;
+        const incorrect = this.incorrectGuesses.join('<br>');
+        this.result = `<strong>You got the following words wrong:</strong><br>${incorrect}`;
         this.resultClass = 'error';
       }
     },

@@ -50,7 +50,7 @@
    },
    methods: {
         onSubmit: function() {
-            if (this.word.english === '' || this.word.german === '' || this.word.frence === '') {
+            if (this.word.english === '' || this.word.german === '' || this.word.french === '') {
             this.errorsPresent = true;
             } else {
             this.$emit('createOrUpdate', this.word);   

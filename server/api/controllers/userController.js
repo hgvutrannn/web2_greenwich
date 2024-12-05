@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 
 // Secret key for signing JWT (store securely in an environment variable)
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
+const JWT_SECRET = 'satmuw-soxwyg-9jywKa';
 
 exports.registerUser = async (req, res) => {
   const { username, password } = req.body;
@@ -130,8 +130,12 @@ exports.saveTestResult = async (req, res) => {
     const userId = req.user.id;
     const { score, incorrectAnswers } = req.body;
 
-    if (!score) {
-      return res.status(400).json({ message: 'Score are required.' });
+    // if (!score) {
+    //   return res.status(400).json({ message: 'Score are required.' });
+    // }
+
+    if (score === undefined || score === null) {
+      return res.status(400).json({ message: 'Score is required.' });
     }
 
     const user = await User.findById(userId);

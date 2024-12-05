@@ -71,16 +71,17 @@ export default {
         username: '',
         testHistory: [], // Initialize as empty array to prevent errors
       },
+      originalUsername: '',
       password: '',
       message: '',
       messageType: '',
+      totalScore: 0,
     };
   },
   async created() {
     try {
       const data = await api.getProfile(); // Fetch user profile
       this.profile = data;
-
       // Sort test history by date in descending order
       this.profile.testHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -93,6 +94,11 @@ export default {
   methods: {
     async updateProfile() {
       try {
+        if (!this.profile.username || this.profile.username.trim() === '') {
+          this.message = 'Username cannot be empty.';
+          this.messageType = 'negative';
+          return;
+        }
         const payload = {
           username: this.profile.username, // Use updated username
           ...(this.password && { password: this.password }), // Include password only if changed

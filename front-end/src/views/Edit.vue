@@ -16,17 +16,36 @@ export default {
   },
   data: function() {
     return {
-      word: {}
+      word: {},
+      origianlWord: {}
     };
   },
   async mounted() {
-    this.word = await api.getWord(this.$route.params.id);
+    const fetchedWord = await api.getWord(this.$route.params.id);
+    this.word = fetchedWord; // Bind fetched word to the form
+    this.originalWord = { ...fetchedWord }; // Store the original data for comparison
   },
   methods: {
-    createOrUpdate: async function(word) {
-        await api.updateWord(word);
-        this.flash('Word updated sucessfully!', 'success');
-        this.$router.push(`/words/${word._id}`);
+    async createOrUpdate(word) {
+      // Compare the current word with the original word
+      if (
+        word.english === this.originalWord.english &&
+        word.german === this.originalWord.german &&
+        word.french === this.originalWord.french
+      ) {
+        this.flash('No changes detected.', 'info'); // Provide feedback to the user
+        return; // Exit if no changes
+      }
+
+      // Proceed with the update if changes are detected
+      try {
+        await api.updateWord(word); // API call to update the word
+        this.flash('Word updated successfully!', 'success');
+        this.$router.push(`/words/${word._id}`); // Redirect to the word's detail page
+      } catch (error) {
+        console.error('Failed to update word:', error);
+        this.flash('Failed to update word. Please try again.', 'error');
+      }
     }
   }
 };
